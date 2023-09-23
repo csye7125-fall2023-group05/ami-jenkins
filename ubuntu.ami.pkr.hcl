@@ -26,13 +26,13 @@ variable "source_ami" {
 variable "ami_prefix" {
   type        = string
   description = "AWS AMI name prefix"
-  default     = "ami_prefix"
+  default     = "CSYE-7125"
 }
 
 variable "ssh_username" {
   type        = string
   description = "username to ssh into the AMI Instance"
-  default     = "username"
+  default     = "ubuntu"
 }
 
 variable "subnet_id" {
@@ -44,19 +44,19 @@ variable "subnet_id" {
 variable "OS" {
   type        = string
   description = "Base operating system version"
-  default     = "OS"
+  default     = "Ubuntu"
 }
 
 variable "ubuntu_version" {
   type        = string
   description = "Version of the custom AMI"
-  default     = "ubuntu-version"
+  default     = "22.04 LTS"
 }
 
 variable "ami_users" {
   type        = list(string)
   description = "List of users who will access the custom AMI"
-  default     = ["54321", "12345", "98765"]
+  default     = ["555431999881", "555431912345", "555431998765"]
 }
 
 variable "instance_type" {
