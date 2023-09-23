@@ -130,5 +130,11 @@ dist
 .pnp.*
 .DS_Store
 
+# artifacts
+*.zip
+*.tar.gz
+*.tar
+manifest*
+
 # packer
-*.pkrvars.hcl
+ami.pkrvars.hcl
