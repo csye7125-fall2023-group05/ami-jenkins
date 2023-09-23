@@ -51,7 +51,7 @@ The custom AMI should have the following features:
 - **OS:** `Ubuntu 22.04 LTS`
 - **Build:** built on the default VPC
 - **Device Name:** `/dev/sda1/`
-- **Volume Size:** `50GiB`
+- **Volume Size:** `8GiB`
 - **Volume Type:** `gp2`
 - Have valid `provisioners`.
 - Pre-installed dependencies using a shell script.
