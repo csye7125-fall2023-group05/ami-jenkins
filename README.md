@@ -119,13 +119,13 @@ packer build --var-file=<variables-file>.pkrvars.hcl <build-config>.pkr.hcl
 
 ## Install Java & Jenkins in AMI
 
-In order for Jenkins to run it requires `Java` 
+In order for Jenkins to run it requires `Java`
 
 ### Java Installation
 
 ```bash
 # Installing Java
-sudp apt-get update
+sudo apt-get update
 sudo apt install openjdk-11-jdk -y
 sudo apt update
 ```
@@ -138,10 +138,9 @@ curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee  
 
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]   https://pkg.jenkins.io/debian-stable binary/ | sudo tee   /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-sudo apt update 
+sudo apt update
 
 sudo apt install jenkins -y
 
- sudo systemctl status jenkins # check the status of Jenkins
+sudo systemctl status jenkins # check the status of Jenkins
 ```
-
