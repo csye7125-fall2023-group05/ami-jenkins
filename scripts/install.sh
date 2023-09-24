@@ -61,3 +61,23 @@ echo "+-------------------------------------------------------------------------
 
 jenkins --version
 
+# Caddy Setup
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+echo "|                                                                                                                                         |"
+echo "|                                                           INSTALL CADDY                                                        |"
+echo "|                                                                                                                                         |"
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+
+sudo apt-get update
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+sleep 3
+CADDY=$?  
+if [ $CADDY -eq 0 ]; then  #checking if exit code is 0 or not
+  echo "Successfully installed the Caddy Service"
+else
+  echo "Unable to install the Caddy Service"
+fi
