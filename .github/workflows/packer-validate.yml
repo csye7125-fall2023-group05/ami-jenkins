@@ -23,7 +23,7 @@ jobs:
           echo ubuntu_version=\"${{ secrets.UBUNTU_VERSION }}\" >> ami.pkrvars.hcl
           echo ssh_username=\"${{ secrets.SSH_USERNAME }}\" >> ami.pkrvars.hcl
           echo subnet_id=\"${{ secrets.SUBNET_ID }}\" >> ami.pkrvars.hcl
-          echo ami_users=\"${{ secrets.AMI_USERS }}\" >> ami.pkrvars.hcl
+          echo ami_users=[${{ secrets.AMI_USERS }}] >> ami.pkrvars.hcl
           echo source_ami=\"${{ secrets.SOURCE_AMI }}\" >> ami.pkrvars.hcl
           echo aws_region=\"${{ env.AWS_REGION }}\" >> ami.pkrvars.hcl
           echo instance_type=\"${{ secrets.INSTANCE_TYPE}}\" >> ami.pkrvars.hcl
