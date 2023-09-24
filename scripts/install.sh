@@ -15,56 +15,61 @@ echo "+-------------------------------------------------------------------------
 # Update packages and dependencies
 sudo apt update && sudo apt upgrade -y
 
-
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
-echo "|                                                           INSTALL JAVA 11                                                        |"
+echo "|                                                               INSTALL JAVA 11                                                           |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Installing Java 
 sudo sudo apt install openjdk-11-jdk -y
-
 sleep 3
-
 
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
-echo "|                                                           VALIDATING JAVA 11                                                        |"
+echo "|                                                             VALIDATING JAVA 11                                                          |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Validating java version
-java -version
-
+JAVA=$?  
+if [ $JAVA -eq 0 ]; then  #checking if exit code is 0 or not
+  echo "Successfully installed Java"
+else
+  echo "Unable to install Java"
+fi
+echo "Java $(java -version)"
 sudo apt update
 
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+echo "|                                                                                                                                         |"
+echo "|                                                                INSTALL JENKINS                                                          |"
+echo "|                                                                                                                                         |"
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee   /usr/share/keyrings/jenkins-keyring.asc > /dev/null	
-
 echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]   https://pkg.jenkins.io/debian-stable binary/ | sudo tee   /etc/apt/sources.list.d/jenkins.list > /dev/null
-
 sudo apt update 
-
-echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
-echo "|                                                                                                                                         |"
-echo "|                                                           INSTALL JENKINS                                                        |"
-echo "|                                                                                                                                         |"
-echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
-
 sudo apt install jenkins -y
 
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
-echo "|                                                           VALIDATING JENKINS                                                        |"
+echo "|                                                             VALIDATING JENKINS                                                          |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
-jenkins --version
+JENKINS=$?  
+if [ $JENKINS -eq 0 ]; then  #checking if exit code is 0 or not
+  echo "Successfully installed Jenkins"
+else
+  echo "Unable to install Jenkins"
+fi
+echo "Jenkins $(jenkins --version)"
 
 # Caddy Setup
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
-echo "|                                                           INSTALL CADDY                                                        |"
+echo "|                                                               INSTALL CADDY                                                             |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
