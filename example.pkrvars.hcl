@@ -1,3 +1,6 @@
+# These are just example variables
+# Actual variables will be created via GitHub organization secrets during the
+# CI/CD pipeline execution
 ami_prefix     = "CSYE7125"
 OS             = "Ubuntu"
 ubuntu_version = "22.04 LTS"
