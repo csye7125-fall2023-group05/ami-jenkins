@@ -117,11 +117,11 @@ packer build --var-file=<variables-file>.pkrvars.hcl <build-config>.pkr.hcl
 
 > NOTE: It is considered best practice to build a custom AMI with variables using HCP Packer!
 
-## Install Java & Jenkins in AMI
+## ⤵️ Install Java & Jenkins in AMI
 
 In order for Jenkins to run it requires `Java`
 
-### Java Installation
+### ☕️ Java Installation
 
 ```bash
 # Installing Java
@@ -130,7 +130,7 @@ sudo apt install openjdk-11-jdk -y
 sudo apt update
 ```
 
-### Jenkins installation
+### 💁‍♂️ Jenkins installation
 
 ```bash
 # Installing Jenkins
