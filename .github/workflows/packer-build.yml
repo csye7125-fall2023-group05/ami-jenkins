@@ -1,20 +1,24 @@
 ---
-# This workflow will validate the Packer AMI templates created using the Hashicorp Configuration Language (HCL2)
-name: Packer AMI template validation
+# This workflow will be triggered to build the custom AMI using Packer on Github Actions using the Hashicorp Configuration Language (HCL2)
+name: Build custom AMI using Packer
 
 on:
-  workflow_dispatch:
-  pull_request:
+  push:
     branches: [master]
-
 jobs:
-  validate:
+  # Packer init, validate and build
+  build:
     runs-on: ubuntu-latest
     environment: ${{ vars.ENVIRONMENT }}
-    name: Validate packer template for the custom AMI
+    name: Build AWS Custom AMI for Jenkins (w/ Caddy)
     steps:
-      - name: Checkout code from branch
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Create & configure Packer variables
         run: |
@@ -44,9 +48,14 @@ jobs:
 
       - name: Packer init
         id: init
-        run: "packer init ubuntu.ami.pkr.hcl"
+        run: "packer init ami.pkr.hcl"
 
       - name: Validate packer template
         id: validate
         run: "packer validate -evaluate-datasources \
+          --var-file=ami.pkrvars.hcl ubuntu.ami.pkr.hcl"
+
+      - name: Build AMI using Packer
+        id: build
+        run: "packer build \
           --var-file=ami.pkrvars.hcl ubuntu.ami.pkr.hcl"
