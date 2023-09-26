@@ -1,5 +1,7 @@
 # Jenkins AMI w/ Hashicorp Packer
 
+[![Build custom AMI using Packer](https://github.com/cyse7125-fall2023-group05/ami-jenkins/actions/workflows/packer-build.yml/badge.svg?branch=master)](https://github.com/cyse7125-fall2023-group05/ami-jenkins/actions/workflows/packer-build.yml)
+
 ## :package: [Packer](https://learn.hashicorp.com/tutorials/packer/get-started-install-cli?in=packer/aws-get-started)
 
 We will build custom AMI (Amazon Machine Image) using Packer from HashiCorp.
