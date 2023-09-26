@@ -53,7 +53,7 @@ variable "ubuntu_version" {
 }
 
 variable "ami_users" {
-  type        = string
+  type        = list(string)
   description = "List of users who will access the custom AMI"
 }
 
@@ -82,7 +82,6 @@ locals {
   truncated_sha = substr(data.git-commit.cwd-head.hash, 0, 8)
   version       = data.git-repository.cwd.head == "master" && data.git-repository.cwd.is_clean ? var.ubuntu_version : "${var.ubuntu_version}-${local.truncated_sha}"
   timestamp     = substr(regex_replace(timestamp(), "[- TZ:]", ""), 8, 13)
-  users         = split(",", "${var.ami_users}")
 }
 
 data "git-repository" "cwd" {}
@@ -90,7 +89,7 @@ data "git-commit" "cwd-head" {}
 
 source "amazon-ebs" "ubuntu" {
   region          = "${var.aws_region}"
-  ami_name        = "${var.ami_prefix}-${local.truncated_sha} [${var.ubuntu_version}:${local.timestamp}]"
+  ami_name        = "${var.ami_prefix}-${local.truncated_sha} [${var.ubuntu_version}-${local.timestamp}]"
   ami_description = "Ubuntu AMI for CSYE 7125 built by ${data.git-commit.cwd-head.author}"
   tags = {
     Name         = "${var.ami_prefix}-${local.truncated_sha}"
@@ -113,7 +112,7 @@ source "amazon-ebs" "ubuntu" {
   source_ami    = "${var.source_ami}"
   ssh_username  = "${var.ssh_username}"
   subnet_id     = "${var.subnet_id}"
-  ami_users     = "${local.users}"
+  ami_users     = "${var.ami_users}"
 
   launch_block_device_mappings {
     delete_on_termination = true

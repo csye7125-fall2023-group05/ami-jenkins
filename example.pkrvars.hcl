@@ -12,4 +12,4 @@ instance_type  = "t2.micro"
 volume_size    = "8"
 volume_type    = "gp2"
 device_name    = "/dev/sda1"
-ami_users      = "555431999881,897161821908"
+ami_users      = ["555431999881", "897161821908"]

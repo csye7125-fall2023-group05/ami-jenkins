@@ -25,7 +25,6 @@ jobs:
           echo ubuntu_version=\"${{ vars.UBUNTU_VERSION }}\" >> ami.pkrvars.hcl
           echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> ami.pkrvars.hcl
           echo subnet_id=\"${{ secrets.SUBNET_ID }}\" >> ami.pkrvars.hcl
-          echo ami_users=[${{ vars.AMI_USERS }}] >> ami.pkrvars.hcl
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> ami.pkrvars.hcl
           echo aws_region=\"${{ vars.AWS_REGION }}\" >> ami.pkrvars.hcl
           echo instance_type=\"${{ vars.INSTANCE_TYPE}}\" >> ami.pkrvars.hcl
@@ -50,4 +49,5 @@ jobs:
       - name: Validate packer template
         id: validate
         run: "packer validate -evaluate-datasources \
-          --var-file=ami.pkrvars.hcl ubuntu.ami.pkr.hcl"
+          --var-file=ami.pkrvars.hcl ubuntu.ami.pkr.hcl \
+          -var 'ami_users=${{ secrets.AMI_USERS }}'"
