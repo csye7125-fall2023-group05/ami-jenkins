@@ -20,7 +20,7 @@ variable "aws_region" {
 variable "source_ami" {
   type        = string
   description = "Default Ubuntu AMI to build our custom AMI"
-  default     = "ami-08c40ec9ead489470" #Ubuntu 22.04 LTS
+  default     = "ami-053b0d53c279acc90" #Ubuntu 22.04 LTS
 }
 
 variable "ami_prefix" {
@@ -38,7 +38,6 @@ variable "ssh_username" {
 variable "subnet_id" {
   type        = string
   description = "Subnet of the default VPC"
-  default     = "subnet-03d1bcaedaf95a150"
 }
 
 variable "OS" {
@@ -56,7 +55,6 @@ variable "ubuntu_version" {
 variable "ami_users" {
   type        = list(string)
   description = "List of users who will access the custom AMI"
-  default     = ["555431999881", "555431912345", "555431998765"]
 }
 
 variable "instance_type" {

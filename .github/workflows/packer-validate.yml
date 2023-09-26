@@ -1,5 +1,6 @@
 ---
-# This workflow will validate the Packer AMI templates created using the Hashicorp Configuration Language (HCL2)
+# This workflow will validate the Packer AMI templates created using the
+# Hashicorp Configuration Language (HCL2)
 name: Packer AMI template validation
 
 on:
@@ -24,7 +25,6 @@ jobs:
           echo ubuntu_version=\"${{ vars.UBUNTU_VERSION }}\" >> ami.pkrvars.hcl
           echo ssh_username=\"${{ vars.SSH_USERNAME }}\" >> ami.pkrvars.hcl
           echo subnet_id=\"${{ secrets.SUBNET_ID }}\" >> ami.pkrvars.hcl
-          echo ami_users=[${{ secrets.AMI_USERS }}] >> ami.pkrvars.hcl
           echo source_ami=\"${{ vars.SOURCE_AMI }}\" >> ami.pkrvars.hcl
           echo aws_region=\"${{ vars.AWS_REGION }}\" >> ami.pkrvars.hcl
           echo instance_type=\"${{ vars.INSTANCE_TYPE}}\" >> ami.pkrvars.hcl
@@ -49,4 +49,5 @@ jobs:
       - name: Validate packer template
         id: validate
         run: "packer validate -evaluate-datasources \
+          -var 'ami_users=${{ secrets.AMI_USERS }}' \
           --var-file=ami.pkrvars.hcl ubuntu.ami.pkr.hcl"

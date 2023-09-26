@@ -127,22 +127,32 @@ In order for Jenkins to run it requires `Java`
 
 ```bash
 # Installing Java
-sudo apt-get update
+sudo apt update --quiet
 sudo apt install openjdk-11-jdk -y
-sudo apt update
+sudo apt update --quiet
+# Validate installation
+java -version
 ```
 
 ### 💁‍♂️ Jenkins installation
 
 ```bash
 # Installing Jenkins
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee   /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]   https://pkg.jenkins.io/debian-stable binary/ | sudo tee   /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update --quiet
+# Debian package repository of Jenkins to automate installation and upgrade.
+# To use this repository, first add the key to the system:
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc >/dev/null
 
-sudo apt update
+# Add a Jenkins apt repository entry:
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list >/dev/null
 
+# update local package index and install Jenkins
+sudo apt update --quiet
 sudo apt install jenkins -y
-
-sudo systemctl status jenkins # check the status of Jenkins
+# check the status of Jenkins
+sudo systemctl status jenkins
 ```
