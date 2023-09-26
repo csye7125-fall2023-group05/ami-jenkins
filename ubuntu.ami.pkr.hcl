@@ -20,7 +20,7 @@ variable "aws_region" {
 variable "source_ami" {
   type        = string
   description = "Default Ubuntu AMI to build our custom AMI"
-  default     = "ami-08c40ec9ead489470" #Ubuntu 22.04 LTS
+  default     = "ami-053b0d53c279acc90" #Ubuntu 22.04 LTS
 }
 
 variable "ami_prefix" {
@@ -38,7 +38,6 @@ variable "ssh_username" {
 variable "subnet_id" {
   type        = string
   description = "Subnet of the default VPC"
-  default     = "subnet-03d1bcaedaf95a150"
 }
 
 variable "OS" {
@@ -54,9 +53,8 @@ variable "ubuntu_version" {
 }
 
 variable "ami_users" {
-  type        = list(string)
+  type        = string
   description = "List of users who will access the custom AMI"
-  default     = ["555431999881", "555431912345", "555431998765"]
 }
 
 variable "instance_type" {
@@ -84,6 +82,7 @@ locals {
   truncated_sha = substr(data.git-commit.cwd-head.hash, 0, 8)
   version       = data.git-repository.cwd.head == "master" && data.git-repository.cwd.is_clean ? var.ubuntu_version : "${var.ubuntu_version}-${local.truncated_sha}"
   timestamp     = substr(regex_replace(timestamp(), "[- TZ:]", ""), 8, 13)
+  users         = split(",", "${var.ami_users}")
 }
 
 data "git-repository" "cwd" {}
@@ -91,7 +90,7 @@ data "git-commit" "cwd-head" {}
 
 source "amazon-ebs" "ubuntu" {
   region          = "${var.aws_region}"
-  ami_name        = "${var.ami_prefix}-${local.truncated_sha} [${var.ubuntu_version}-${local.timestamp}]"
+  ami_name        = "${var.ami_prefix}-${local.truncated_sha} [${var.ubuntu_version}:${local.timestamp}]"
   ami_description = "Ubuntu AMI for CSYE 7125 built by ${data.git-commit.cwd-head.author}"
   tags = {
     Name         = "${var.ami_prefix}-${local.truncated_sha}"
@@ -114,7 +113,7 @@ source "amazon-ebs" "ubuntu" {
   source_ami    = "${var.source_ami}"
   ssh_username  = "${var.ssh_username}"
   subnet_id     = "${var.subnet_id}"
-  ami_users     = "${var.ami_users}"
+  ami_users     = "${local.users}"
 
   launch_block_device_mappings {
     delete_on_termination = true
