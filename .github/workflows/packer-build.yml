@@ -48,7 +48,7 @@ jobs:
 
       - name: Packer init
         id: init
-        run: "packer init ami.pkr.hcl"
+        run: "packer init ubuntu.ami.pkr.hcl"
 
       - name: Validate packer template
         id: validate
