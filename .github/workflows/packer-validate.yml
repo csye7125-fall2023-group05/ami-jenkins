@@ -1,5 +1,6 @@
 ---
-# This workflow will validate the Packer AMI templates created using the Hashicorp Configuration Language (HCL2)
+# This workflow will validate the Packer AMI templates created using the
+# Hashicorp Configuration Language (HCL2)
 name: Packer AMI template validation
 
 on:

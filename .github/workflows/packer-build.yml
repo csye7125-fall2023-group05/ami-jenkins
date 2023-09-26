@@ -1,8 +1,10 @@
 ---
-# This workflow will be triggered to build the custom AMI using Packer on Github Actions using the Hashicorp Configuration Language (HCL2)
+# This workflow will be triggered to build the custom AMI using Packer on
+# Github Actions using the Hashicorp Configuration Language (HCL2)
 name: Build custom AMI using Packer
 
 on:
+  workflow_dispatch:
   push:
     branches: [master]
 jobs:
