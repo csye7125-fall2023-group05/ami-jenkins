@@ -156,3 +156,23 @@ sudo apt install jenkins -y
 # check the status of Jenkins
 sudo systemctl status jenkins
 ```
+
+## 🔒 Configure Caddy Service
+
+```bash
+# Install and configure keyring for caddy stable release:
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo \
+  gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee \
+  /etc/apt/sources.list.d/caddy-stable.list
+
+# Install caddy:
+sudo apt update # required to refresh apt with the newly installed keys
+sudo apt install caddy -y
+```
+
+To configure reverse-proxy with Caddy, refer the [official documentation here](https://caddyserver.com/docs/quick-starts/reverse-proxy).
+For details on configuring reverse-proxy, refer this [`userdata.sh`](https://github.com/cyse7125-fall2023-group05/infra-jenkins/blob/master/modules/ec2/userdata.sh) file.
+
+> NOTE: To remove reverse proxy error on Jenkins server: Jenkins->Manage->Configure->Jenkins URL->set it to "caddy1".

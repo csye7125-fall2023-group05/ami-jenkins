@@ -126,7 +126,7 @@ build {
   sources = ["source.amazon-ebs.ubuntu"]
 
   # https://www.packer.io/docs/provisioners/file#uploading-files-that-don-t-exist-before-packer-starts
-  provisioners "file" {
+  provisioner "file" {
     source      = "./scripts/plugins.txt"
     destination = "/home/ubuntu/plugins.txt"
   }
@@ -141,7 +141,7 @@ build {
     ]
   }
 
-  provisioners "file" {
+  provisioner "file" {
     source      = "./scripts/casc.yaml"
     destination = "/var/lib/jenkins/casc.yaml"
   }
