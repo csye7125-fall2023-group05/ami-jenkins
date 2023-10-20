@@ -125,6 +125,12 @@ source "amazon-ebs" "ubuntu" {
 build {
   sources = ["source.amazon-ebs.ubuntu"]
 
+  # https://www.packer.io/docs/provisioners/file#uploading-files-that-don-t-exist-before-packer-starts
+  provisioners "file" {
+    source      = "./scripts/plugins.txt"
+    destination = "/home/ubuntu/plugins.txt"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
@@ -133,6 +139,11 @@ build {
     scripts = [
       "./scripts/install.sh",
     ]
+  }
+
+  provisioners "file" {
+    source      = "./scripts/casc.yaml"
+    destination = "/var/lib/jenkins/casc.yaml"
   }
 
   post-processor "manifest" {
