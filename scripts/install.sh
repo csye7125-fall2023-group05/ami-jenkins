@@ -129,7 +129,8 @@ echo "|                                                                         
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Install Jenkins plugin manager tool:
-wget https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.13/jenkins-plugin-manager-2.12.13.jar
+wget --quiet \
+ https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.13/jenkins-plugin-manager-2.12.13.jar
 
 # Install plugins with jenkins-plugin-manager tool:
 sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkins.war \
@@ -138,6 +139,9 @@ sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkin
 # Update users and group permissions to `jenkins` for all installed plugins:
 cd /var/lib/jenkins/plugins/ || exit
 sudo chown jenkins:jenkins *
+
+# Move casc.yaml file to Jenkins home
+sudo mv /home/ubuntu/casc.yaml /var/lib/jenkins/casc.yaml
 
 # Configure JAVA_OPTS to disable setup wizard
 sudo mkdir -p /etc/systemd/system/jenkins.service.d/

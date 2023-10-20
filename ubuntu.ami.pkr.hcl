@@ -131,6 +131,11 @@ build {
     destination = "/home/ubuntu/plugins.txt"
   }
 
+  provisioner "file" {
+    source      = "./scripts/casc.yaml"
+    destination = "/home/ubuntu/casc.yaml"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
@@ -139,11 +144,6 @@ build {
     scripts = [
       "./scripts/install.sh",
     ]
-  }
-
-  provisioner "file" {
-    source      = "./scripts/casc.yaml"
-    destination = "/var/lib/jenkins/casc.yaml"
   }
 
   post-processor "manifest" {
