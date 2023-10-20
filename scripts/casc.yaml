@@ -1,0 +1,16 @@
+obs:
+  - script: >
+      multibranchPipelineJob('test-seed') {
+        branchSources {
+          git {
+            id('92098798334')
+            remote('https://github.com/username/example')
+            includes('*')
+          }
+        }
+        orphanedItemStrategy {
+          discardOldItems {
+            numToKeep(5)
+          }
+        }
+      }
