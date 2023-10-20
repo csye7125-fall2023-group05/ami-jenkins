@@ -136,6 +136,11 @@ build {
     destination = "/home/ubuntu/casc.yaml"
   }
 
+  provisioner "file" {
+    source      = "./scripts/jenkins_setup.groovy"
+    destination = "/home/ubuntu/jenkins_setup.groovy"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",

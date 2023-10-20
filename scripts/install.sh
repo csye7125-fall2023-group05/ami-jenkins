@@ -142,6 +142,10 @@ sudo chown jenkins:jenkins *
 
 # Move casc.yaml file to Jenkins home
 sudo mv /home/ubuntu/casc.yaml /var/lib/jenkins/casc.yaml
+sudo mv /home/ubuntu/jenkins_setup.groovy /var/lib/jenkins/jenkins_setup.groovy
+# Update file ownership
+sudo chown jenkins:jenkins /var/lib/jenkins/casc.yaml
+sudo chown jenkins:jenkins /var/lib/jenkins/jenkins_setup.groovy
 
 # Configure JAVA_OPTS to disable setup wizard
 sudo mkdir -p /etc/systemd/system/jenkins.service.d/
