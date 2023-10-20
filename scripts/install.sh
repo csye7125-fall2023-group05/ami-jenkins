@@ -121,11 +121,6 @@ fi
 # Check the status of Caddy service
 sudo systemctl --full status caddy
 
-# https://caddyserver.com/docs/quick-starts/reverse-proxy
-# For details on configuring reverse-proxy:
-# https://github.com/cyse7125-fall2023-group05/infra-jenkins/blob/master/modules/ec2/userdata.sh
-# To remove reverse proxy error: Jenkins->manage->configure->Jenkins URL->"caddy1"
-
 # Jenkins Configuration
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
