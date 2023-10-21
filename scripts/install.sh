@@ -121,6 +121,9 @@ fi
 # Check the status of Caddy service
 sudo systemctl --full status caddy
 
+# Check Caddy version
+echo "Caddy $(caddy --version)"
+
 # Jenkins Configuration
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
@@ -140,12 +143,13 @@ sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkin
 cd /var/lib/jenkins/plugins/ || exit
 sudo chown jenkins:jenkins *
 
-# Move casc.yaml file to Jenkins home
-sudo mv /home/ubuntu/casc.yaml /var/lib/jenkins/casc.yaml
-sudo mv /home/ubuntu/jenkins_setup.groovy /var/lib/jenkins/jenkins_setup.groovy
+# Move Jenkins files to Jenkins home
+cd /home/ubuntu/ || exit
+sudo mv jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy /var/lib/jenkins/
+
 # Update file ownership
-sudo chown jenkins:jenkins /var/lib/jenkins/casc.yaml
-sudo chown jenkins:jenkins /var/lib/jenkins/jenkins_setup.groovy
+cd /var/lib/jenkins/ || exit
+sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy
 
 # Configure JAVA_OPTS to disable setup wizard
 sudo mkdir -p /etc/systemd/system/jenkins.service.d/
