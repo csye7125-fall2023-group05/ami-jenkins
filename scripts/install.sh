@@ -133,7 +133,7 @@ echo "+-------------------------------------------------------------------------
 
 # Install Jenkins plugin manager tool:
 wget --quiet \
- https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.13/jenkins-plugin-manager-2.12.13.jar
+  https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.13/jenkins-plugin-manager-2.12.13.jar
 
 # Install plugins with jenkins-plugin-manager tool:
 sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkins.war \
@@ -141,7 +141,7 @@ sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkin
 
 # Update users and group permissions to `jenkins` for all installed plugins:
 cd /var/lib/jenkins/plugins/ || exit
-sudo chown jenkins:jenkins *
+sudo chown jenkins:jenkins ./*
 
 # Move Jenkins files to Jenkins home
 cd /home/ubuntu/ || exit
@@ -155,7 +155,7 @@ sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy
 sudo mkdir -p /etc/systemd/system/jenkins.service.d/
 {
   echo "[Service]"
-  echo "Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config=/var/lib/jenkins/casc.yaml\""
+  echo "Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config=/var/lib/jenkins/jcasc.yaml\""
 } | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
 sudo systemctl daemon-reload
 sudo systemctl stop jenkins
