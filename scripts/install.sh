@@ -17,31 +17,31 @@ sudo apt-get update --quiet && sudo apt-get upgrade -y
 
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
-echo "|                                                               INSTALL JAVA 17                                                           |"
+echo "|                                                               INSTALL JAVA 11                                                           |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Install Java for Jenkins: (https://adoptium.net/installation/linux/)
-
+sudo apt-get install openjdk-11-jdk -y
 # Ensure necessary packages are present:
-sudo apt-get install -y wget apt-transport-https
+# sudo apt-get install -y wget apt-transport-https
 
 # Download the Eclipse Adoptium GPG key:
-sudo mkdir -p /etc/apt/keyrings
-wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee \
-  /etc/apt/keyrings/adoptium.asc
+# sudo mkdir -p /etc/apt/keyrings
+# wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo tee \
+#   /etc/apt/keyrings/adoptium.asc
 
-# Configure the Eclipse Adoptium apt repository:
-# To check the full list of versions supported take a look at the list in the tree at https://packages.adoptium.net/ui/native/deb/dists/.
-# For Linux Mint (based on Ubuntu) you have to replace VERSION_CODENAME with UBUNTU_CODENAME.
-echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] \
-https://packages.adoptium.net/artifactory/deb \
-$(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee \
-  /etc/apt/sources.list.d/adoptium.list
+# # Configure the Eclipse Adoptium apt repository:
+# # To check the full list of versions supported take a look at the list in the tree at https://packages.adoptium.net/ui/native/deb/dists/.
+# # For Linux Mint (based on Ubuntu) you have to replace VERSION_CODENAME with UBUNTU_CODENAME.
+# echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] \
+# https://packages.adoptium.net/artifactory/deb \
+# $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee \
+#   /etc/apt/sources.list.d/adoptium.list
 
-# Install the Temurin version you require:
-sudo apt-get update # required to refresh apt with the newly installed keys
-sudo apt-get install temurin-21-jdk -y
+# # Install the Temurin version you require:
+# sudo apt-get update # required to refresh apt with the newly installed keys
+# sudo apt-get install temurin-21-jdk -y
 
 # Validate Java installation
 JAVA=$?
