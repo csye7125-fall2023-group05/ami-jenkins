@@ -127,18 +127,21 @@ build {
 
   # https://www.packer.io/docs/provisioners/file#uploading-files-that-don-t-exist-before-packer-starts
   provisioner "file" {
-    source      = "./scripts/plugins.txt"
+    source      = "./jenkins/plugins.txt"
     destination = "/home/ubuntu/plugins.txt"
   }
 
   provisioner "file" {
-    source      = "./scripts/casc.yaml"
-    destination = "/home/ubuntu/casc.yaml"
+    source      = "./jenkins/jcasc.yaml"
+    destination = "/home/ubuntu/jcasc.yaml"
   }
-
   provisioner "file" {
-    source      = "./scripts/jenkins_setup.groovy"
-    destination = "/home/ubuntu/jenkins_setup.groovy"
+    source      = "./jenkins/webapp_seed.groovy"
+    destination = "/home/ubuntu/webapp_seed.groovy"
+  }
+  provisioner "file" {
+    source      = "./jenkins/webapp_db_seed.groovy"
+    destination = "/home/ubuntu/webapp_db_seed.groovy"
   }
 
   provisioner "shell" {
