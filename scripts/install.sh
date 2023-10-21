@@ -13,7 +13,7 @@ echo "|                                                                         
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Update packages and dependencies
-sudo apt update --quiet && sudo apt upgrade -y
+sudo apt-get update --quiet && sudo apt-get upgrade -y
 
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
@@ -24,7 +24,7 @@ echo "+-------------------------------------------------------------------------
 # Install Java for Jenkins: (https://adoptium.net/installation/linux/)
 
 # Ensure necessary packages are present:
-sudo apt install -y wget apt-transport-https
+sudo apt-get install -y wget apt-transport-https
 
 # Download the Eclipse Adoptium GPG key:
 sudo mkdir -p /etc/apt/keyrings
@@ -40,8 +40,8 @@ $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee \
   /etc/apt/sources.list.d/adoptium.list
 
 # Install the Temurin version you require:
-sudo apt update # required to refresh apt with the newly installed keys
-sudo apt install temurin-17-jdk -y
+sudo apt-get update # required to refresh apt with the newly installed keys
+sudo apt-get install temurin-21-jdk -y
 
 # Validate Java installation
 JAVA=$?
@@ -73,8 +73,8 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   /etc/apt/sources.list.d/jenkins.list >/dev/null
 
 # Install Jenkins:
-sudo apt update # required to refresh apt with the newly installed keys
-sudo apt install jenkins -y
+sudo apt-get update # required to refresh apt with the newly installed keys
+sudo apt-get install jenkins -y
 
 # Validate Jenkins installation
 JENKINS=$?
@@ -100,15 +100,15 @@ echo "+-------------------------------------------------------------------------
 # Caddy(stable) installation docs: https://caddyserver.com/docs/install#debian-ubuntu-raspbian
 
 # Install and configure keyring for caddy stable release:
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+sudo apt-get install -y debian-keyring debian-archive-keyring apt-transport-https
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo \
   gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee \
   /etc/apt/sources.list.d/caddy-stable.list
 
 # Install caddy:
-sudo apt update # required to refresh apt with the newly installed keys
-sudo apt install caddy -y
+sudo apt-get update # required to refresh apt with the newly installed keys
+sudo apt-get install caddy -y
 
 # Validate caddy installation:
 CADDY=$?
@@ -169,7 +169,7 @@ echo "|                                                                         
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 
 # Add Docker's official GPG key:
-sudo apt install ca-certificates curl gnupg
+sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
@@ -181,8 +181,8 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
 # Install Docker:
-sudo apt update
-sudo apt install docker-ce -y
+sudo apt-get update
+sudo apt-get install docker-ce -y
 
 # Validate docker installation:
 DOCKER=$?
