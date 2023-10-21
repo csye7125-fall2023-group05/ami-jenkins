@@ -7,7 +7,6 @@ bootstrap5-api:latest
 bouncycastle-api:latest
 branch-api:latest
 build-timeout:latest
-build-pipeline-plugin:latest
 caffeine-api:latest
 checks-api:latest
 cloudbees-folder:latest
@@ -40,10 +39,8 @@ jquery3-api:latest
 jsch:latest
 junit:latest
 ldap:latest
-thinbackup:latest
 lockable-resources:latest
 mailer:latest
-maven:latest
 matrix-auth:latest
 matrix-project:latest
 momentjs:latest
