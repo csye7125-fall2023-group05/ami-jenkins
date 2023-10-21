@@ -135,12 +135,13 @@ build {
     source      = "./jenkins/jcasc.yaml"
     destination = "/home/ubuntu/jcasc.yaml"
   }
+
   provisioner "file" {
-    source      = "./jenkins/webapp_seed.groovy"
+    source      = "./scripts/webapp_seed.groovy"
     destination = "/home/ubuntu/webapp_seed.groovy"
   }
   provisioner "file" {
-    source      = "./jenkins/webapp_db_seed.groovy"
+    source      = "./scripts/webapp_db_seed.groovy"
     destination = "/home/ubuntu/webapp_db_seed.groovy"
   }
 
