@@ -1,3 +1,6 @@
 jobs:
   - file: ./webapp_seed.groovy
   - file: ./webapp_db_seed.groovy
+unclassified:
+  location:
+    url: https://jenkins.sydrawat.me
