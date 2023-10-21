@@ -23,6 +23,9 @@ echo "+-------------------------------------------------------------------------
 
 # Install Java for Jenkins: (https://adoptium.net/installation/linux/)
 sudo apt-get install openjdk-11-jdk -y
+
+sleep 3
+
 # Ensure necessary packages are present:
 # sudo apt-get install -y wget apt-transport-https
 
@@ -42,14 +45,6 @@ sudo apt-get install openjdk-11-jdk -y
 # # Install the Temurin version you require:
 # sudo apt-get update # required to refresh apt with the newly installed keys
 # sudo apt-get install temurin-21-jdk -y
-
-# Validate Java installation
-JAVA=$?
-if [ $JAVA -eq 0 ]; then
-  echo "Successfully installed Java"
-else
-  echo "Unable to install Java"
-fi
 
 # Check Java version:
 echo "Java $(java -version)"
@@ -73,16 +68,9 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
   /etc/apt/sources.list.d/jenkins.list >/dev/null
 
 # Install Jenkins:
-sudo apt-get update # required to refresh apt with the newly installed keys
-sudo apt-get install jenkins -y
+sudo apt-get update && sudo apt-get install jenkins -y
 
-# Validate Jenkins installation
-JENKINS=$?
-if [ $JENKINS -eq 0 ]; then
-  echo "Successfully installed Jenkins"
-else
-  echo "Unable to install Jenkins"
-fi
+sleep 3
 
 # Check the status of Jenkins service
 sudo systemctl --full status jenkins
@@ -107,16 +95,7 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo 
   /etc/apt/sources.list.d/caddy-stable.list
 
 # Install caddy:
-sudo apt-get update # required to refresh apt with the newly installed keys
-sudo apt-get install caddy -y
-
-# Validate caddy installation:
-CADDY=$?
-if [ $CADDY -eq 0 ]; then
-  echo "Successfully installed the Caddy Service"
-else
-  echo "Unable to install the Caddy Service"
-fi
+sudo apt-get update && sudo apt-get install caddy -y
 
 # Check the status of Caddy service
 sudo systemctl --full status caddy
@@ -157,6 +136,8 @@ sudo mkdir -p /etc/systemd/system/jenkins.service.d/
   echo "[Service]"
   echo "Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config=/var/lib/jenkins/jcasc.yaml\""
 } | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+
+echo "Restarting Jenkins service with JCasC..."
 sudo systemctl daemon-reload
 sudo systemctl stop jenkins
 sudo systemctl start jenkins
@@ -181,16 +162,7 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
 # Install Docker:
-sudo apt-get update
-sudo apt-get install docker-ce -y
-
-# Validate docker installation:
-DOCKER=$?
-if [ $DOCKER -eq 0 ]; then
-  echo "Successfully installed Docker"
-else
-  echo "Unable to install Docker"
-fi
+sudo apt-get update && sudo apt-get install docker-ce -y
 
 # Provide relevant permissions
 sudo chmod 666 /var/run/docker.sock
