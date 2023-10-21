@@ -41,7 +41,7 @@ $(awk -F= '/^VERSION_CODENAME/{print$2}' /etc/os-release) main" | sudo tee \
 
 # Install the Temurin version you require:
 sudo apt-get update # required to refresh apt with the newly installed keys
-sudo apt-get install temurin-17-jdk -y
+sudo apt-get install temurin-21-jdk -y
 
 # Validate Java installation
 JAVA=$?
