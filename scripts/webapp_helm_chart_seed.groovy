@@ -1,10 +1,10 @@
-multibranchPipelineJob('webapp') {
+multibranchPipelineJob('webapp-helm-chart') {
   branchSources {
     github {
-      id('csye7125-webapp')
+      id('csye7125-webapp-helm-chart')
       scanCredentialsId('jenkins-sydrawat')
       repoOwner('csye7125-fall2023-group05')
-      repository('webapp')
+      repository('webapp-helm-chart')
     }
   }
 
