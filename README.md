@@ -176,3 +176,127 @@ To configure reverse-proxy with Caddy, refer the [official documentation here](h
 For details on configuring reverse-proxy, refer this [`userdata.sh`](https://github.com/cyse7125-fall2023-group05/infra-jenkins/blob/master/modules/ec2/userdata.sh) file.
 
 > NOTE: To remove reverse proxy error on Jenkins server: Jenkins->Manage->Configure->Jenkins URL->set it to "caddy1".
+
+## ⚙️ Configuring Jenkins
+
+### ⬇️ Installing plugins
+
+We will configure the Jenkins server using the `install.sh` script that configures and installs plugins for us in an automated fashion.
+There are a couple of plugins that will help us setup the Jenkins server with `Jenkins Configuration as Code`:
+
+- `job-dsl`: Configure seed jobs to setup multi-branch pipelines
+- `configuration-as-code-groovy`: Configure Jenkins with a JCasC `yaml` file that runs the `Groovy` scripts defined in the seed jobs
+
+In order to install the plugins on the EC2 instance, we need to download and run the `plugin-installation-manager-tool` from [GitHub](https://github.com/jenkinsci/plugin-installation-manager-tool/).
+
+```bash
+# Install Jenkins plugin manager tool:
+wget --quiet \
+  https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.13/jenkins-plugin-manager-2.12.13.jar
+```
+
+Next, we need to install the list of plugins mentioned in the `plugins.txt` file:
+
+> The `plugins.txt` file contains the names and the versions of the plugins that we would need to configure Jenkins and run CI/CD jobs.
+
+```bash
+# Install plugins with jenkins-plugin-manager tool:
+sudo java -jar ./jenkins-plugin-manager-2.12.13.jar --war /usr/share/java/jenkins.war \
+  --plugin-download-directory /var/lib/jenkins/plugins --plugin-file plugins.txt
+```
+
+Remember that we need to update the user and group permissions to `jenkins` for these plugins:
+
+```bash
+# Update users and group permissions to `jenkins` for all installed plugins:
+cd /var/lib/jenkins/plugins/ || exit
+sudo chown jenkins:jenkins ./*
+```
+
+### 🧾 JCasC
+
+In order to configure Jenkins with Configuration as Code, we need to define a `yaml` file with some basic fields:
+
+```yaml
+jobs:
+  - file: ./<your_seed_job>.groovy
+unclassified:
+  location:
+    url: https://<localhost>:8080
+
+```
+
+### 🧳 Seed jobs using Groovy scripts
+
+To setup multi-branch pipelines, we'll use `Groovy` scripts:
+
+```groovy
+multibranchPipelineJob('job-name') {
+  branchSources {
+    github {
+      id('unique-job-id')
+      scanCredentialsId('github-webhook-app-credentials')
+      repoOwner('repository-owner')
+      repository('repository-name')
+    }
+  }
+
+  orphanedItemStrategy {
+    discardOldItems {
+      numToKeep(-1)
+      daysToKeep(-1)
+    }
+  }
+}
+
+```
+
+We have to update the user and group permissions for the JCasC and groovy files:
+
+```bash
+# Update file ownership
+cd /var/lib/jenkins/ref/ || exit
+sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy
+```
+
+### ⏫ Update jenkins service
+
+To disable the initial Jenkins setup wizard and to configure the Jenkins server using the JCasC file, we'll need to update the `jenkins.service` systemd service file:
+
+```bash
+# Configure JAVA_OPTS to disable setup wizard
+sudo mkdir -p /etc/systemd/system/jenkins.service.d/
+{
+  echo "[Service]"
+  echo "Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false -Dcasc.jenkins.config=/var/lib/jenkins/ref/jcasc.yaml\""
+} | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+```
+
+Finally, restart your jenkins service:
+
+```bash
+# restart jenkins service
+sudo systemctl daemon-reload
+sudo systemctl stop jenkins
+sudo systemctl start jenkins
+```
+
+## 🪝 Webhook
+
+In order for GitHub to run the Jenkins pipeline jobs, we would need a webhook that would be trigger on code push to the `master` branch.
+We need to install and configure a `GitHub app` in our organization, and also `webhooks` in the repositories that would be scanned in order to run the build pipeline jobs.
+
+> IMPORTANT: The URL for the webhook should be of the format: `https://<your-jenkins-server-domain>.tld/github-webhook`.
+
+Once you've created and installed the GitHub app at the organization level on GitHub, it is time to add the credentials of this app on the Jenkins server.
+
+In order to do this, download the `pkcs1` private key that you need to generate manually from the GitHub app. We would need to convert this private key int `pkcs8` format for Jenkins to talk to the GitHub app.
+
+```bash
+# convert pkcs1 private key to pkcs8
+openssl pkcs8 -topk8 -nocrypt -in <github-app-private-key.pem> -out <jenkins-private-key>.pem
+```
+
+Next, we would need to add this private key with a unique id on the Jenkins server in the credentials section. This should help the GitHub app and the Jenkins server talk to each other over webhooks. Also, we need to fill out the `App ID` in the credentials section with the GitHub app ID.
+
+> As an additional step, remember to add your `DockerHub` or `Quay` container repository secrets in the credentials section within the Jenkins server, since we will need them in our build pipelines.
