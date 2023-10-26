@@ -3,6 +3,7 @@ antisamy-markup-formatter:latest
 build-timeout:latest
 cloudbees-folder:latest
 command-launcher:latest
+configuration-as-code:latest
 configuration-as-code-groovy:latest
 credentials:latest
 credentials-binding:latest

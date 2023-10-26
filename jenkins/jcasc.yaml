@@ -2,6 +2,24 @@ jobs:
   - file: ./webapp_seed.groovy
   - file: ./webapp_db_seed.groovy
   - file: ./webapp_helm_chart_seed.groovy
+# https://github.com/jenkinsci/configuration-as-code-plugin/issues/701
+tool:
+  #This tool can't be installed against alpine OS
+  nodejs:
+    defaultProperties:
+      - installSource:
+          installers:
+            - nodeJSInstaller:
+                npmPackagesRefreshHours: 72
+    installations:
+      - name: "node"
+        home: ""
+        properties:
+          - installSource:
+              installers:
+                - nodeJSInstaller:
+                    id: "20.9.0"
+                    npmPackagesRefreshHours: 72
 unclassified:
   location:
     url: https://jenkins.sydrawat.me
