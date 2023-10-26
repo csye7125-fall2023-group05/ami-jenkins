@@ -119,7 +119,7 @@ packer build --var-file=<variables-file>.pkrvars.hcl <build-config>.pkr.hcl
 
 > NOTE: It is considered best practice to build a custom AMI with variables using HCP Packer!
 
-## ⤵️ Install Java & Jenkins in AMI
+## ⤵️ Install required software
 
 In order for Jenkins to run it requires `Java`
 
@@ -134,7 +134,7 @@ sudo apt update --quiet
 java -version
 ```
 
-### 💁‍♂️ Jenkins installation
+### 💁‍♂️ Jenkins Installation
 
 ```bash
 # Installing Jenkins
@@ -155,6 +155,54 @@ sudo apt update --quiet
 sudo apt install jenkins -y
 # check the status of Jenkins
 sudo systemctl status jenkins
+```
+
+### 📦 NodeJS Installation
+
+```bash
+# https://github.com/nodesource/distributions#installation-instructions
+# Download and import the Nodesource GPG key
+sudo apt-get install -y ca-certificates curl gnupg
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo \
+  gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+# Create a deb repository
+NODE_MAJOR=20
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo \
+  tee /etc/apt/sources.list.d/nodesource.list
+
+# Run update and install
+sudo apt-get update && sudo apt-get install nodejs -y
+
+# Check Node version:
+echo "Node $(node --version)"
+```
+
+### 🐳 Docker Installation
+
+```bash
+# Add Docker's official GPG key:
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" |
+  sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+# Install Docker:
+sudo apt-get update && sudo apt-get install docker-ce -y
+
+# Provide relevant permissions
+sudo chmod 666 /var/run/docker.sock
+sudo usermod -a -G docker jenkins
+
+# Check Docker version
+echo "Docker $(docker --version)"
 ```
 
 ## 🔒 Configure Caddy Service
@@ -185,6 +233,7 @@ We will configure the Jenkins server using the `install.sh` script that configur
 There are a couple of plugins that will help us setup the Jenkins server with `Jenkins Configuration as Code`:
 
 - `job-dsl`: Configure seed jobs to setup multi-branch pipelines
+- `configuration-as-code`: Configure Jenkins with a JCasC `yaml` file that installs required tools and creates users
 - `configuration-as-code-groovy`: Configure Jenkins with a JCasC `yaml` file that runs the `Groovy` scripts defined in the seed jobs
 
 In order to install the plugins on the EC2 instance, we need to download and run the `plugin-installation-manager-tool` from [GitHub](https://github.com/jenkinsci/plugin-installation-manager-tool/).
@@ -256,7 +305,7 @@ We have to update the user and group permissions for the JCasC and groovy files:
 ```bash
 # Update file ownership
 cd /var/lib/jenkins/ref/ || exit
-sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy
+sudo chown jenkins:jenkins <your-jcasc>.yaml <your_seed_job>.groovy
 ```
 
 ### ⏫ Update jenkins service

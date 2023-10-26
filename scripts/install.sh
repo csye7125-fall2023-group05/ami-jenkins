@@ -17,6 +17,32 @@ sudo apt-get update --quiet && sudo apt-get upgrade -y
 
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
 echo "|                                                                                                                                         |"
+echo "|                                                              INSTALL NODEJS                                                             |"
+echo "|                                                                                                                                         |"
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+
+# https://github.com/nodesource/distributions#installation-instructions
+# Download and import the Nodesource GPG key
+sudo apt-get install -y ca-certificates curl gnupg
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo \
+  gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+
+# Create a deb repository
+NODE_MAJOR=20
+echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" | sudo \
+  tee /etc/apt/sources.list.d/nodesource.list
+
+# Run update and install
+sudo apt-get update && sudo apt-get install nodejs -y
+
+sleep 3
+
+# Check Node version:
+echo "Node $(node --version)"
+
+echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
+echo "|                                                                                                                                         |"
 echo "|                                                               INSTALL JAVA 11                                                           |"
 echo "|                                                                                                                                         |"
 echo "+-----------------------------------------------------------------------------------------------------------------------------------------+"
@@ -124,11 +150,11 @@ sudo chown jenkins:jenkins ./*
 
 # Move Jenkins files to Jenkins home
 cd /home/ubuntu/ || exit
-sudo mv jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy /var/lib/jenkins/
+sudo mv jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy webapp_helm_chart_seed.groovy /var/lib/jenkins/
 
 # Update file ownership
 cd /var/lib/jenkins/ || exit
-sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy
+sudo chown jenkins:jenkins jcasc.yaml webapp_seed.groovy webapp_db_seed.groovy webapp_helm_chart_seed.groovy
 
 # Configure JAVA_OPTS to disable setup wizard
 sudo mkdir -p /etc/systemd/system/jenkins.service.d/

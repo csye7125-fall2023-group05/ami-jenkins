@@ -145,6 +145,11 @@ build {
     destination = "/home/ubuntu/webapp_db_seed.groovy"
   }
 
+  provisioner "file" {
+    source      = "./scripts/webapp_helm_chart_seed.groovy"
+    destination = "/home/ubuntu/webapp_helm_chart_seed.groovy"
+  }
+
   provisioner "shell" {
     environment_vars = [
       "DEBIAN_FRONTEND=noninteractive",
