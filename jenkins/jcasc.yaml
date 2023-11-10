@@ -2,6 +2,7 @@ jobs:
   - file: ./webapp_seed.groovy
   - file: ./webapp_db_seed.groovy
   - file: ./webapp_helm_chart_seed.groovy
+  - file: ./infra_helm_chart_seed.groovy
 # https://github.com/jenkinsci/configuration-as-code-plugin/issues/701
 tool:
   #This tool can't be installed against alpine OS
