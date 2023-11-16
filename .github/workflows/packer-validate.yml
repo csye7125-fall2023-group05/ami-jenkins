@@ -17,6 +17,13 @@ jobs:
       - name: Checkout code from branch
         uses: actions/checkout@v3
 
+      - name: Jenkins Configuration as Code artifacts
+        run: |
+          cd jenkins && cp jcasc.yaml ../ && cd ..
+          cd scripts  && cp *.groovy ../ && cd ..
+          tar -czvf config.tgz jcasc.yaml *.groovy
+          rm -rf jcasc.yaml *.groovy
+
       - name: Create & configure Packer variables
         run: |
           touch ami.pkrvars.hcl
