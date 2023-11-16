@@ -132,25 +132,8 @@ build {
   }
 
   provisioner "file" {
-    source      = "./jenkins/jcasc.yaml"
-    destination = "/home/ubuntu/jcasc.yaml"
-  }
-
-  provisioner "file" {
-    source      = "./scripts/webapp_seed.groovy"
-    destination = "/home/ubuntu/webapp_seed.groovy"
-  }
-  provisioner "file" {
-    source      = "./scripts/webapp_db_seed.groovy"
-    destination = "/home/ubuntu/webapp_db_seed.groovy"
-  }
-  provisioner "file" {
-    source      = "./scripts/infra_helm_chart_seed.groovy"
-    destination = "/home/ubuntu/infra_helm_chart_seed.groovy"
-  }
-  provisioner "file" {
-    source      = "./scripts/webapp_helm_chart_seed.groovy"
-    destination = "/home/ubuntu/webapp_helm_chart_seed.groovy"
+    source      = "./configs.tgz"
+    destination = "/home/ubuntu/configs.tgz"
   }
 
   provisioner "shell" {
