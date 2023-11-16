@@ -21,7 +21,7 @@ jobs:
         run: |
           cd jenkins && cp jcasc.yaml ../ && cd ..
           cd scripts  && cp *.groovy ../ && cd ..
-          tar -czvf config.tgz jcasc.yaml *.groovy
+          tar -czvf configs.tgz jcasc.yaml *.groovy
           rm -rf jcasc.yaml *.groovy
 
       - name: Create & configure Packer variables
