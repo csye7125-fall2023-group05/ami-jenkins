@@ -5,6 +5,7 @@ jobs:
   - file: ./infra_helm_chart_seed.groovy
   - file: ./consumer_seed.groovy
   - file: ./producer_seed.groovy
+  - file: ./consumer_db_seed.groovy
 # https://github.com/jenkinsci/configuration-as-code-plugin/issues/701
 tool:
   #This tool can't be installed against alpine OS
